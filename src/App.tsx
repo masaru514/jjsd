@@ -1,25 +1,19 @@
 import { Box } from '@material-ui/core';
-import logo from './logo.svg';
+import { format } from "date-fns"
+import { utcToZonedTime } from "date-fns-tz"
 
 function App(): JSX.Element {
+  const today = new Date()
+  const test = new Date('2021-08-31')
+  console.log(test)
+  const t = today.getDate()
+  const jstDate = utcToZonedTime(today, 'Asia/Tokyo')
+  const time = format(jstDate, 'yyyy/MM/dd HH:mm:ss')
+  console.log(t)
   return (
     <div className="App">
-      <Box>ああ</Box>
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      {time}
+      </div>
   );
 }
 
