@@ -26,12 +26,168 @@ function App(): JSX.Element {
     return '✗'
   }
 
+  // 日にちのうちの１日の情報をオブジェクトで持つ
+  const obj = {
+    // １日の日付
+    date: twoWeeks[0],
+    // 各時間毎にどういうデータを持っているかという情報を知りたい。
+    // 10:00 0件~3件データが入っているか、など。 しかしこのデータ自体は上限幅だけを決める形にしたいとおもう。
+    timeTable: [
+      // 1オブジェクトが10:00, 11:00...で同期
+      {
+        list: [
+          {
+            name: 'masaruです'
+          },
+          {
+            name: 'ふじこです。'
+          },
+          {
+            name: 'まさおです;'
+          }
+        ]
+      },
+      {
+        list: [
+          {
+            name: 'masaruです'
+          },
+          {
+            name: 'ふじこです。'
+          },
+          {
+            name: 'まさおです;'
+          }
+        ]
+      },
+      {
+        list: [
+          {
+            name: 'masaruです'
+          },
+          {
+            name: 'ふじこです。'
+          },
+          {
+            name: 'まさおです;'
+          }
+        ]
+      },
+      {
+        list: [
+          {
+            name: 'masaruです'
+          },
+          {
+            name: 'ふじこです。'
+          },
+          {
+            name: 'まさおです;'
+          }
+        ]
+      },
+      {
+        list: [
+          {
+            name: 'masaruです'
+          },
+          {
+            name: 'ふじこです。'
+          },
+          {
+            name: 'まさおです;'
+          }
+        ]
+      },
+      {
+        list: [
+          {
+            name: 'masaruです'
+          },
+          {
+            name: 'ふじこです。'
+          },
+          {
+            name: 'まさおです;'
+          }
+        ]
+      },
+      {
+        list: [
+          {
+            name: 'masaruです'
+          },
+          {
+            name: 'ふじこです。'
+          },
+          {
+            name: 'まさおです;'
+          }
+        ]
+      },
+      {
+        list: [
+          {
+            name: 'masaruです'
+          },
+          {
+            name: 'ふじこです。'
+          },
+          {
+            name: 'まさおです;'
+          }
+        ]
+      },
+      {
+        list: [
+          {
+            name: 'masaruです'
+          },
+          {
+            name: 'ふじこです。'
+          },
+          {
+            name: 'まさおです;'
+          }
+        ]
+      },
+      {
+        list: [
+          {
+            name: 'masaruです'
+          },
+          {
+            name: 'ふじこです。'
+          },
+          {
+            name: 'まさおです;'
+          }
+        ]
+      },
+      {
+        list: [
+          {
+            name: 'masaruです'
+          },
+          {
+            name: 'ふじこです。'
+          },
+          {
+            name: 'まさおです;'
+          }
+        ]
+      },
+    ]
+  }
+  console.log(obj.date)
+
+  // const test = () => {
+
+  // }
+
   return (
     <div className="App">
       <Box>
-        {twoWeeks.map(i =>
-          <div key={i.date}>{i.date}</div>
-        )}
         <TableContainer component={Paper}>
           <Table aria-label="simple table">
             <TableHead>
@@ -46,18 +202,13 @@ function App(): JSX.Element {
               {time.map((row) => (
                 <TableRow key={row}>
                   <TableCell component="th" scope="row">
-                    {row}
+                    {row}aa
                   </TableCell>
                   {
                     twoWeeks.map((i, index) =>
-                      <TableCell key={i.date}>{isAbleReservation(i.date)}</TableCell>
+                      <TableCell align="center" key={i.date} />
                     )
                   }
-                  {/*
-                  <TableCell align="right">{row}</TableCell>
-                  <TableCell align="right">{row}</TableCell>
-                  <TableCell align="right">{row}</TableCell>
-                  <TableCell align="right">{row}</TableCell> */}
                 </TableRow>
               ))}
             </TableBody>
