@@ -1,18 +1,61 @@
-import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core';
+import { Box, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, makeStyles } from '@material-ui/core';
 import { format } from "date-fns"
 import ja from 'date-fns/locale/ja'
+import data from './assets/dummyData'
+
+const useStyles = makeStyles({
+  row: {
+    display: 'table-row',
+  },
+  emptyCell: {
+    width: '68px'
+  },
+  datePick: {
+    padding: 0,
+  },
+  datePickTableCell: {
+    width: '56px',
+    textAlign: 'center'
+  },
+  emptyCellTime: {
+    padding: 0,
+    width: '68px',
+  },
+  tableTimeCols: {
+    display: 'flex',
+    flexDirection: 'column',
+    padding: 0,
+  },
+  tableCols: {
+    display: 'flex',
+    flexDirection: 'column',
+    padding: 0,
+  },
+  tableHeaderRowMonths: {
+    padding: '12px 20px',
+  },
+  tableHeaderRowDates: {
+    padding: '12px',
+    textAlign: 'center',
+  }
+})
 
 function App(): JSX.Element {
+  const classes = useStyles()
   // 2週間を取得
   const twoWeeks = Array.from({length: 14}, (_, i) => {
     const d = new Date()
     d.setDate(d.getDate() + i)
-    const [year, month, date, day] = format(d, 'yyyy MM dd eee', { locale: ja }).split(' ')
+
+    // memo:eee 曜日
+    const fullDate = format(d, 'yyyy MM dd', { locale: ja })
+    const [year, month, date, day] = fullDate.split(' ')
     return {
       year,
       month,
       date,
-      day
+      day,
+      fullDate
     }
   })
 
@@ -21,169 +64,22 @@ function App(): JSX.Element {
 
   // dateが存在すれば可能とする
   // memo: このへんの要件を少し考えたい + タイムラインとの同期をしないと使い勝手が悪い
-  const isAbleReservation = (date: string) => {
-    if(date) return '○'
-    return '✗'
+  const isAbleReservation = (date: number) => {
+    if(date === 3) return '×'
+    if (date === 2) return '△'
+    if (date === 1 || date === 0) return '○'
+    return 'エラー'
   }
 
-  // 日にちのうちの１日の情報をオブジェクトで持つ
-  const obj = {
-    // １日の日付
-    date: twoWeeks[0],
-    // 各時間毎にどういうデータを持っているかという情報を知りたい。
-    // 10:00 0件~3件データが入っているか、など。 しかしこのデータ自体は上限幅だけを決める形にしたいとおもう。
-    timeTable: [
-      // 1オブジェクトが10:00, 11:00...で同期
-      {
-        list: [
-          {
-            name: 'masaruです'
-          },
-          {
-            name: 'ふじこです。'
-          },
-          {
-            name: 'まさおです;'
-          }
-        ]
-      },
-      {
-        list: [
-          {
-            name: 'masaruです'
-          },
-          {
-            name: 'ふじこです。'
-          },
-          {
-            name: 'まさおです;'
-          }
-        ]
-      },
-      {
-        list: [
-          {
-            name: 'masaruです'
-          },
-          {
-            name: 'ふじこです。'
-          },
-          {
-            name: 'まさおです;'
-          }
-        ]
-      },
-      {
-        list: [
-          {
-            name: 'masaruです'
-          },
-          {
-            name: 'ふじこです。'
-          },
-          {
-            name: 'まさおです;'
-          }
-        ]
-      },
-      {
-        list: [
-          {
-            name: 'masaruです'
-          },
-          {
-            name: 'ふじこです。'
-          },
-          {
-            name: 'まさおです;'
-          }
-        ]
-      },
-      {
-        list: [
-          {
-            name: 'masaruです'
-          },
-          {
-            name: 'ふじこです。'
-          },
-          {
-            name: 'まさおです;'
-          }
-        ]
-      },
-      {
-        list: [
-          {
-            name: 'masaruです'
-          },
-          {
-            name: 'ふじこです。'
-          },
-          {
-            name: 'まさおです;'
-          }
-        ]
-      },
-      {
-        list: [
-          {
-            name: 'masaruです'
-          },
-          {
-            name: 'ふじこです。'
-          },
-          {
-            name: 'まさおです;'
-          }
-        ]
-      },
-      {
-        list: [
-          {
-            name: 'masaruです'
-          },
-          {
-            name: 'ふじこです。'
-          },
-          {
-            name: 'まさおです;'
-          }
-        ]
-      },
-      {
-        list: [
-          {
-            name: 'masaruです'
-          },
-          {
-            name: 'ふじこです。'
-          },
-          {
-            name: 'まさおです;'
-          }
-        ]
-      },
-      {
-        list: [
-          {
-            name: 'masaruです'
-          },
-          {
-            name: 'ふじこです。'
-          },
-          {
-            name: 'まさおです;'
-          }
-        ]
-      },
-    ]
-  }
-  console.log(obj.date)
-
-  // const test = () => {
-
-  // }
+  // 現在表示されている"日にち"の中で重複している月数の計算を行う。
+  const numberOfMonths = twoWeeks.reduce((acc, cur) => {
+    if(!acc[cur.month]) {
+      acc[cur.month] = 1
+      return acc
+    }
+    acc[cur.month] += 1
+    return acc
+  }, {} as { [key: string]: number})
 
   return (
     <div className="App">
@@ -192,25 +88,48 @@ function App(): JSX.Element {
           <Table aria-label="simple table">
             <TableHead>
               <TableRow>
-                <TableCell component="th" scope="row" />
-                {twoWeeks.map(({ month, date }) =>
-                  <TableCell>{month}.{date}</TableCell>
+                <TableCell className={classes.emptyCell} />
+                {Object.keys(numberOfMonths).map(month =>
+                <TableCell colSpan={numberOfMonths[month]} className={classes.tableHeaderRowMonths}>{month}</TableCell>
+                )}
+              </TableRow>
+
+              <TableRow>
+                <TableCell className={classes.emptyCell} />
+                {twoWeeks.map(({ date }) =>
+                  <TableCell className={classes.tableHeaderRowDates}>
+                      {date}
+                  </TableCell>
                 )}
               </TableRow>
             </TableHead>
             <TableBody>
-              {time.map((row) => (
-                <TableRow key={row}>
-                  <TableCell component="th" scope="row">
-                    {row}aa
-                  </TableCell>
-                  {
-                    twoWeeks.map((i, index) =>
-                      <TableCell align="center" key={i.date} />
-                    )
-                  }
-                </TableRow>
-              ))}
+              <TableRow className={classes.row}>
+                <TableCell className={classes.emptyCellTime}>
+                  {time.map((col) => (
+                    <TableRow key={col}>
+                      <TableCell>
+                        {col}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableCell>
+                {/* 日付個数分並ぶ */}
+                {
+                  data.map(obj => (
+                    <TableCell className={classes.datePick}>
+                      {obj.timeTable.map(i => (
+                        <TableRow>
+                          <TableCell className={classes.datePickTableCell}>
+                            {isAbleReservation(i.list.length)}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableCell>
+                  ))
+                }
+
+              </TableRow>
             </TableBody>
           </Table>
         </TableContainer>
