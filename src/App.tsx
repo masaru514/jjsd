@@ -4,8 +4,18 @@ import ja from 'date-fns/locale/ja'
 import data from './assets/dummyData'
 
 const useStyles = makeStyles({
+  paper: {
+    maxWidth: 1000,
+  },
+  root: {
+    tableLayout: 'fixed',
+    maxWidth: 1000
+  },
   row: {
     display: 'table-row',
+  },
+  tableRow: {
+    borderBottom: '1px solid rgba(224, 224, 224, 1)'
   },
   emptyCell: {
     width: '68px'
@@ -14,8 +24,9 @@ const useStyles = makeStyles({
     padding: 0,
   },
   datePickTableCell: {
-    width: '56px',
-    textAlign: 'center'
+    textAlign: 'center',
+    borderBottom: 'none',
+    width: '200px'
   },
   emptyCellTime: {
     padding: 0,
@@ -83,14 +94,13 @@ function App(): JSX.Element {
 
   return (
     <div className="App">
-      <Box>
-        <TableContainer component={Paper}>
-          <Table aria-label="simple table">
+        <TableContainer component={Paper} className={classes.paper}>
+          <Table aria-label="simple table" className={classes.root}>
             <TableHead>
               <TableRow>
                 <TableCell className={classes.emptyCell} />
                 {Object.keys(numberOfMonths).map(month =>
-                <TableCell colSpan={numberOfMonths[month]} className={classes.tableHeaderRowMonths}>{month}</TableCell>
+                <TableCell component="th" colSpan={numberOfMonths[month]} className={classes.tableHeaderRowMonths}>{month}</TableCell>
                 )}
               </TableRow>
 
@@ -119,7 +129,7 @@ function App(): JSX.Element {
                   data.map(obj => (
                     <TableCell className={classes.datePick}>
                       {obj.timeTable.map(i => (
-                        <TableRow>
+                        <TableRow className={classes.tableRow}>
                           <TableCell className={classes.datePickTableCell}>
                             {isAbleReservation(i.list.length)}
                           </TableCell>
@@ -133,7 +143,6 @@ function App(): JSX.Element {
             </TableBody>
           </Table>
         </TableContainer>
-      </Box>
     </div>
   )
 }
